@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#eaf6ff">
-  <title>MyRun — Timothy</title>
+  <title>MyRun / Timothy</title>
   <meta name="description" content="What I learned rebuilding an inference engine in C. The build, the debugging, and the evidence.">
-  <meta property="og:title" content="MyRun — Timothy">
+  <meta property="og:title" content="MyRun / Timothy">
   <meta property="og:description" content="What I learned rebuilding an inference engine in C.">
   <meta property="og:type" content="website">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -49,7 +49,7 @@
     </section>
 
     <section class="build-section" id="build" aria-labelledby="build-heading">
-      <div class="section-heading"><h2 id="build-heading">How it came together</h2><span>August–September 2026</span></div>
+      <div class="section-heading"><h2 id="build-heading">How it came together</h2><span>August to September 2026</span></div>
       <ol class="build-steps">
         <li><span class="step-number" aria-hidden="true">01</span><div><h3>Load the model.</h3><p>Read the weights. Compare values with the reference.</p></div></li>
         <li><span class="step-number" aria-hidden="true">02</span><div><h3>Build the forward pass.</h3><p>Work through attention and each layer. Check intermediate values.</p></div></li>
@@ -120,8 +120,8 @@
       <details>
         <summary>What the test proves<span aria-hidden="true" class="detail-icon"></span></summary>
         <div class="detail-body">
-          <p>On October 5, 2026, both programs exited successfully and produced identical 813-byte outputs.</p>
-          <p>The test used <code>stories15M.bin</code>, greedy generation, and a 256-step limit with early stopping.</p>
+          <p>On October 5, 2026, both programs exited successfully and produced identical outputs of 813 bytes.</p>
+          <p>The test used <code>stories15M.bin</code>, greedy generation, and a limit of 256 steps with early stopping.</p>
           <p>Both builds used <code>clang -O3 -Wall</code> and <code>-lm</code>. Source files remained unchanged.</p>
           <p>This checks one model and one starting condition. It does not establish correctness for other models or prompts.</p>
           <p>The test does not establish a performance advantage. Memory cleanup and broader tests remain future work.</p>
@@ -131,10 +131,11 @@
       <details>
         <summary>How I built and checked it<span aria-hidden="true" class="detail-icon"></span></summary>
         <div class="detail-body">
-          <p>I used Karpathy’s <a href="https://github.com/karpathy/llama2.c">llama2.c</a> for the reference architecture, model, and comparison program.</p>
-          <p>I implemented the rebuild with AI explanations, reference measurements, and debugging help. Some parts began as copied code.</p>
-          <p>I do not claim independent authorship of every line or a new model architecture.</p>
-          <p>These insights draw on selected original sessions from August and September 2026.</p>
+          <p>I rebuilt the engine using Karpathy’s <a href="https://github.com/karpathy/llama2.c">llama2.c</a> as the reference, with AI support.</p>
+          <p>I proposed explanations, worked through calculations, and compared results. AI asked questions, challenged mistakes, and supplied tests and explanations.</p>
+          <p>For the token selection bug, I suspected the integer type. With prompts, I traced how it changed the comparison. In the next session, I explained that failure before receiving feedback.</p>
+          <p>Some code and reasoning came directly from the reference and AI. The session excerpts show what I worked through myself and where I received help.</p>
+          <p>I checked the program against the reference. I checked my understanding by explaining why a result occurred.</p>
         </div>
       </details>
     </section>
