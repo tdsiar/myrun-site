@@ -55,6 +55,31 @@
         <li><span class="step-number" aria-hidden="true">02</span><div><h3>Build the forward pass.</h3><p>Work through attention and each layer. Check intermediate values.</p></div></li>
         <li><span class="step-number" aria-hidden="true">03</span><div><h3>Generate readable text.</h3><p>Select tokens, decode characters, and compare the complete output.</p></div></li>
       </ol>
+      <details class="reasoning-panel glass">
+        <summary>See how I reasoned through a bug<span aria-hidden="true" class="detail-icon"></span></summary>
+        <div class="reasoning-body">
+          <p class="reasoning-intro">I could identify the suspect line before I could explain why it failed.</p>
+          <ol class="reasoning-flow" aria-label="From my hypothesis to my understanding">
+            <li><span class="reasoning-label">My hypothesis</span><h3>Could the type be wrong?</h3><p>I noticed that <code>max_p</code> used an integer to store a decimal score.</p><code class="reasoning-value">int max_p</code></li>
+            <li><span class="reasoning-label">AI’s challenge</span><h3>Does it round or truncate?</h3><p>I first thought 18.9 became 19. AI challenged that and supplied a small test.</p><code class="reasoning-value">18.9 → 19?</code></li>
+            <li><span class="reasoning-label">My corrected trace</span><h3>The comparison changes.</h3><p>With prompts, I worked through it: 18.9 becomes 18. Then 18.2 is greater than 18.</p><code class="reasoning-value">18.2 &gt; 18</code></li>
+            <li><span class="reasoning-label">My later explanation</span><h3>I could explain the failure.</h3><p>In the next session, I explained why the lower score won, before receiving feedback.</p><span class="reasoning-value">Explain the cause</span></li>
+          </ol>
+          <p class="reasoning-lesson">What changed: finding a suspect line was only the start. I needed to explain how it changed the result.</p>
+          <details class="reasoning-evidence">
+            <summary>Read the session excerpts<span aria-hidden="true" class="detail-icon"></span></summary>
+            <div class="detail-body">
+              <p>Selected excerpts, September 12, 2026 (UTC). Original wording. The diagram above condenses the exchanges.</p>
+              <blockquote><p>“it could be that i put max p as a int?”</p><cite>Me · My hypothesis</cite></blockquote>
+              <blockquote><p>“Does C round or truncate when converting a float to an int?”</p><cite>AI · A question followed by a test and explanation</cite></blockquote>
+              <blockquote><p>“18 is stored and so comparison is 18.2 &gt; then 18? and it is. so true.”</p><cite>Me · Working through the comparison</cite></blockquote>
+              <blockquote><p>“18.2 wins because 18.9 was not correctly defined and got truncuated.”</p><cite>Me · Explaining the mechanism in the next session</cite></blockquote>
+              <p>AI supplied reference values, debugging prompts, a test, and explanations. I proposed the type error and worked through the comparison.</p>
+              <p>I still confused the score with its index in that exchange. The later explanation supports this specific learning.</p>
+            </div>
+          </details>
+        </div>
+      </details>
     </section>
 
     <section id="insights" aria-labelledby="insights-heading">
@@ -63,8 +88,8 @@
         <div class="insight-copy">
           <p class="context-label">September 12 · A debugging example</p>
           <h3>Find the first wrong result.</h3>
-          <p>The text first changed at step 19. With AI guidance, I traced the problem to token selection.</p>
-          <p>I noticed that I had stored a decimal score in an integer. Truncation let a lower score win.</p>
+          <p>The text first changed at step 19. Reference comparisons and AI guidance focused the check on token selection.</p>
+          <p>I questioned the integer type, then worked through the comparison with AI prompts. Truncation let a lower score win.</p>
         </div>
         <figure class="comparison">
           <figcaption>The score changed before comparison.</figcaption>
