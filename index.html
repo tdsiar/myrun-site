@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#eaf6ff">
+  <title>MyRun — Timothy</title>
+  <meta name="description" content="What I learned rebuilding an inference engine in C. The build, the debugging, and the evidence.">
+  <meta property="og:title" content="MyRun — Timothy">
+  <meta property="og:description" content="What I learned rebuilding an inference engine in C.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/eb-garamond.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="field" aria-hidden="true"></div>
+  <header class="topbar">
+    <div class="topbar-inner glass">
+      <a class="brand" href="#main">Timothy / MyRun</a>
+      <nav aria-label="Page sections">
+        <a href="#build">The build</a>
+        <a href="#insights">Insights</a>
+        <a href="#evidence">Evidence</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="main">
+    <header class="hero">
+      <p class="intro-label">A learning project in C</p>
+      <h1>Inside the run.</h1>
+      <p class="lede">I built MyRun to understand how a language model generates text.</p>
+      <p class="hero-note">Here is what the build taught me.</p>
+    </header>
+
+    <section class="result glass" aria-labelledby="result-heading">
+      <div class="result-heading">
+        <h2 id="result-heading">The output matches.</h2>
+        <span class="status">Verified October 5, 2026</span>
+      </div>
+      <div class="output-pair">
+        <div class="output"><span class="output-label">MyRun</span><p>Once upon a time, there was a little girl named Lily.</p></div>
+        <div class="output"><span class="output-label">Reference</span><p>Once upon a time, there was a little girl named Lily.</p></div>
+      </div>
+      <p class="result-caption">813 identical bytes in the tested output. <a href="#evidence">See the test conditions</a>.</p>
+    </section>
+
+    <section class="build-section" id="build" aria-labelledby="build-heading">
+      <div class="section-heading"><h2 id="build-heading">How it came together</h2><span>August–September 2026</span></div>
+      <ol class="build-steps">
+        <li><span class="step-number" aria-hidden="true">01</span><div><h3>Load the model.</h3><p>Read the weights. Compare values with the reference.</p></div></li>
+        <li><span class="step-number" aria-hidden="true">02</span><div><h3>Build the forward pass.</h3><p>Work through attention and each layer. Check intermediate values.</p></div></li>
+        <li><span class="step-number" aria-hidden="true">03</span><div><h3>Generate readable text.</h3><p>Select tokens, decode characters, and compare the complete output.</p></div></li>
+      </ol>
+    </section>
+
+    <section id="insights" aria-labelledby="insights-heading">
+      <h2 class="insights-heading" id="insights-heading">What changed my thinking</h2>
+      <article class="insight-feature glass">
+        <div class="insight-copy">
+          <p class="context-label">September 12 · A debugging example</p>
+          <h3>Find the first wrong result.</h3>
+          <p>The text first changed at step 19. With AI guidance, I traced the problem to token selection.</p>
+          <p>I noticed that I had stored a decimal score in an integer. Truncation let a lower score win.</p>
+        </div>
+        <figure class="comparison">
+          <figcaption>The score changed before comparison.</figcaption>
+          <div class="score-row"><span>Higher score</span><strong>18.970549</strong></div>
+          <div class="score-row stored"><span>Stored as an integer</span><strong>18</strong></div>
+          <div class="score-row"><span>Later, lower score</span><strong>18.290007</strong></div>
+          <p class="comparison-result"><code>18.290007 &gt; 18</code><span>The wrong token wins.</span></p>
+        </figure>
+        <p class="takeaway">A wrong output does not mean every earlier stage is wrong.</p>
+      </article>
+      <div class="insight-notes">
+        <article><h3>Measure each stage.</h3><p>One total could hide where the time went. I wanted separate timings.</p><p class="lesson">Decide what a measurement means before using it to explain performance.</p></article>
+        <article><h3>Check my understanding.</h3><p>Some code worked before I could explain it. I challenged AI help that supplied answers I wanted to derive.</p><p class="lesson">Running a command is different from knowing how to choose it.</p></article>
+      </div>
+    </section>
+
+    <section class="related" aria-labelledby="related-heading">
+      <h2 id="related-heading">Related work</h2>
+      <div class="project-links">
+        <a href="https://github.com/karpathy/llama2.c"><span>llama2.c</span><span>Karpathy’s direct reference</span></a>
+        <a href="https://github.com/ggml-org/llama.cpp"><span>llama.cpp</span><span>Broader work on local inference</span></a>
+        <a href="https://github.com/karpathy/llm.c"><span>llm.c</span><span>Training in C and CUDA</span></a>
+      </div>
+    </section>
+
+    <section class="evidence-section" id="evidence" aria-labelledby="evidence-heading">
+      <h2 id="evidence-heading">Evidence and limits</h2>
+      <details>
+        <summary>What the test proves<span aria-hidden="true" class="detail-icon"></span></summary>
+        <div class="detail-body">
+          <p>On October 5, 2026, both programs exited successfully and produced identical 813-byte outputs.</p>
+          <p>The test used <code>stories15M.bin</code>, greedy generation, and a 256-step limit with early stopping.</p>
+          <p>Both builds used <code>clang -O3 -Wall</code> and <code>-lm</code>. Source files remained unchanged.</p>
+          <p>This checks one model and one starting condition. It does not establish correctness for other models or prompts.</p>
+          <p>The test does not establish a performance advantage. Memory cleanup and broader tests remain future work.</p>
+          <a class="evidence-link" href="evidence.json">Read the verification record</a>
+        </div>
+      </details>
+      <details>
+        <summary>How I built and checked it<span aria-hidden="true" class="detail-icon"></span></summary>
+        <div class="detail-body">
+          <p>I used Karpathy’s <a href="https://github.com/karpathy/llama2.c">llama2.c</a> for the reference architecture, model, and comparison program.</p>
+          <p>I implemented the rebuild with AI explanations, reference measurements, and debugging help. Some parts began as copied code.</p>
+          <p>I do not claim independent authorship of every line or a new model architecture.</p>
+          <p>These insights draw on selected original sessions from August and September 2026.</p>
+        </div>
+      </details>
+    </section>
+  </main>
+  <footer class="wrap footer"><span>Timothy / MyRun</span><span>Built with reference code and AI help.</span><a href="#main">Back to top</a></footer>
+</body>
+</html>

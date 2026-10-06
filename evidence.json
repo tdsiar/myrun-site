@@ -1,0 +1,33 @@
+{
+  "date_utc": "2026-10-05T17:25:47Z",
+  "source_sha256": {
+    "myrun.c": "16c2cf35619b1ca52c67732cb80d1b17219541ec3c8a09167beabb21ec4f7639",
+    "run.c": "39cbab95d4934c905f00fe6b22542b38320abb4f28c84e826a1750e114450c15"
+  },
+  "myrun": {
+    "exit_code": 0,
+    "output_bytes": 813,
+    "stdout_sha256": "aed31b5dccc53ec57b969b614bb701d6c270b30bb2d9eb75061af2360b4e2658"
+  },
+  "run": {
+    "exit_code": 0,
+    "output_bytes": 813,
+    "stdout_sha256": "aed31b5dccc53ec57b969b614bb701d6c270b30bb2d9eb75061af2360b4e2658"
+  },
+  "equal_output": true,
+  "sources_unchanged": true,
+  "compiler_flags": [
+    "-O3",
+    "-Wall",
+    "-lm"
+  ],
+  "model": "stories15M.bin",
+  "reference_arguments": [
+    "stories15M.bin",
+    "-t",
+    "0",
+    "-n",
+    "256"
+  ],
+  "scope": "One model and one starting condition. No performance advantage established."
+}
